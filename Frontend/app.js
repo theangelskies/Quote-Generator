@@ -1,34 +1,20 @@
-const API_URL = "http://localhost:3000"; // or your deployed URL
+const API_URL = "http://j11rlr6ue3ulpk0bfrddot0q.178.105.39.91.sslip.io";
 
 const quoteEl = document.getElementById("quote");
 const authorEl = document.getElementById("author");
 const button = document.getElementById("btn");
 
-async function fetchQuote() {
+async function loadQuote() {
   try {
-    // loading state
-    quoteEl.textContent = "Loading...";
-    authorEl.textContent = "";
-
     const res = await fetch(API_URL);
-
-    if (!res.ok) {
-      throw new Error("Network response was not ok");
-    }
-
     const data = await res.json();
 
-    quoteEl.textContent = `"${data.quote}"`;
-    authorEl.textContent = `- ${data.author}`;
-  } catch (error) {
-    console.error(error);
-    quoteEl.textContent = "Failed to load quote.";
-    authorEl.textContent = "";
+    quoteEl.textContent = data.quote;
+    authorEl.textContent = "- " + data.author;
+  } catch (err) {
+    console.error(err);
   }
 }
 
-// Load first quote on page load
-fetchQuote();
-
-// Fetch new quote on button click
-button.addEventListener("click", fetchQuote);
+loadQuote();
+button.onclick = loadQuote;
