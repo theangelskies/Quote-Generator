@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { log } from "node:console";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -61,6 +62,7 @@ app.post("/", (req, res) => {
   });
 });
 
-app.listen(port, () => {
+app.listen(port, (error) => {
+  console.log(error);
   console.log(`Quote server listening on port ${port}`);
 });
