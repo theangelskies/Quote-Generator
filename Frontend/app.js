@@ -1,4 +1,4 @@
-const API_URL = process.env.BACKEND_URL || "http://localhost:3000";
+const API_URL = "http://gwnua349zd0cw8jtzttehx75.178.105.39.91.sslip.io";
 
 const quoteEl = document.getElementById("quote");
 const authorEl = document.getElementById("author");
