@@ -1,4 +1,4 @@
-const API_URL = "http://j11rlr6ue3ulpk0bfrddot0q.178.105.39.91.sslip.io";
+const API_URL = "http://localhost:3000";
 
 const quoteEl = document.getElementById("quote");
 const authorEl = document.getElementById("author");
