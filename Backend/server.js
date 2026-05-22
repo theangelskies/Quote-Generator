@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import { log } from "node:console";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,49 +19,28 @@ const quotes = [
   },
 ];
 
-function randomQuote() {
-  const index = Math.floor(Math.random() * quotes.length);
-  return quotes[index];
-}
-
 app.get("/", (req, res) => {
-  const quote = randomQuote();
-  res.json(quote);
+  const index = Math.floor(Math.random() * quotes.length);
+  res.json(quotes[index]);
 });
 
 app.post("/", (req, res) => {
-  const bodyBytes = [];
-  req.on("data", (chunk) => bodyBytes.push(...chunk));
-  req.on("end", () => {
-    const bodyString = String.fromCharCode(...bodyBytes);
-    let body;
-    try {
-      body = JSON.parse(bodyString);
-    } catch (error) {
-      console.error(`Failed to parse body ${bodyString} as JSON: ${error}`);
-      res.status(400).send("Expected body to be JSON.");
-      return;
-    }
-    if (typeof body != "object" || !("quote" in body) || !("author" in body)) {
-      console.error(
-        `Failed to extract quote and author from post body: ${bodyString}`,
-      );
-      res
-        .status(400)
-        .send(
-          "Expected body to be a JSON object containing keys quote and author.",
-        );
-      return;
-    }
-    quotes.push({
-      quote: body.quote,
-      author: body.author,
+  const { quote, author } = req.body;
+
+  if (!quote || !author || quote.trim() === "" || author.trim() === "") {
+    return res.status(400).json({
+      error: "Quote and author cannot be empty",
     });
-    res.send("ok");
+  }
+
+  quotes.push({
+    quote: quote.trim(),
+    author: author.trim(),
   });
+
+  res.json({ message: "Quote added successfully" });
 });
 
-app.listen(port, (error) => {
-  console.log(error);
-  console.log(`Quote server listening on port ${port}`);
+app.listen(port, () => {
+  console.log(`Quote server running on http://localhost:${port}`);
 });
